@@ -1,0 +1,8 @@
+{
+    "rules": {
+        "ngrx-action-type-property-name": [
+            true,
+            "ActionsTypes"
+        ]
+    }
+}

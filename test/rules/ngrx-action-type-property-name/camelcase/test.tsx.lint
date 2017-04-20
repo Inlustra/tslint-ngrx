@@ -1,0 +1,17 @@
+export const UserActionTypes = {
+    MY_USER: '[User] My User`',
+    ~~~~~~~                         [Action type properties must be camel case]
+    wrongType: '[User] Wrong Type'
+};
+
+const UserActionTypes = {
+    MY_USER: '[User] My User`',
+    ~~~~~~~                         [Action type properties must be camel case]
+    wrongType: '[User] Wrong Type'
+};
+
+export const AnotherObject = {
+    thisDoesntMatter: ''
+}
+
+export const myNumber = 20;

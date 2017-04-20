@@ -1,0 +1,8 @@
+{
+    "rulesDirectory": "./rules",
+    "rules": {
+        "ngrx-action-name-suffix": true,
+        "ngrx-action-type-property-name": true,
+        "ngrx-action-type-property-value": true
+    }
+}

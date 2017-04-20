@@ -1,0 +1,28 @@
+{
+  "name": "tslint-ngrx",
+  "version": "1.0.0",
+  "description": "A repository for opinionated ngrx rules.",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "build": "npm-run-all -p clean compile copy",
+    "clean": "rm -rf ./build/*",
+    "lint": "tslint 'src/**/*.ts'",
+    "compile": "tsc -p ./",
+    "copy": "cp -f package.json README.md tslint-ngrx.json build/",
+    "test": "npm-run-all build test-rules",
+    "test-rules": "scripts/verify.sh"
+  },
+  "author": "Thomas Joseph Nairn (thomas@thenairn.com)",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^7.0.13",
+    "npm-run-all": "^4.0.2",
+    "tslint": "^5.1.0",
+    "typescript": "^2.2.2"
+  },
+  "dependencies": {
+    "case": "^1.5.2"
+  }
+}

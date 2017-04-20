@@ -1,0 +1,19 @@
+export const UserActionTypes = {
+    MY_USER: '[User] My User`',
+    MY_OTHER_USER: '[User] myOtherUser'
+                   ~~~~~~~~~~~~~~~~~~~~          [Action type property value must contain 'My Other User']
+};
+
+const UserActionTypes = {
+    MY_USER: '[User] My User`',
+    MY_OTHER_USER: type('[User] myOtherUser'),
+                        ~~~~~~~~~~~~~~~~~~~~                         [Action type property value must contain 'My Other User']
+    MY_OTHER_USER: anotherRandomFunction('mutliple','args')
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~          [Action type property value must contain 'My Other User']
+};
+
+export const AnotherObject = {
+    thisDoesntMatter: ''
+}
+
+export const myNumber = 20;

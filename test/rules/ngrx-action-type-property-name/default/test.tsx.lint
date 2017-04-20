@@ -1,0 +1,17 @@
+export const UserActionTypes = {
+    MY_USER: '[User] My User`',
+    wrongType: '[User] Wrong Type'
+    ~~~~~~~~~                       [Action type properties must be constant case]
+};
+
+const UserActionTypes = {
+    MY_USER: '[User] My User`',
+    wrongType: '[User] Wrong Type'
+    ~~~~~~~~~                       [Action type properties must be constant case]
+};
+
+export const AnotherObject = {
+    thisDoesntMatter: ''
+}
+
+export const myNumber = 20;

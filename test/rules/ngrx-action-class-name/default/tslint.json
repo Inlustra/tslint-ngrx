@@ -1,0 +1,5 @@
+{
+    "rules": {
+        "ngrx-action-name-suffix": true
+    }
+}

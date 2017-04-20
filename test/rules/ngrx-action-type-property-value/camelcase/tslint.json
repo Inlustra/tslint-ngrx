@@ -1,0 +1,9 @@
+{
+    "rules": {
+        "ngrx-action-type-property-value": [
+            true,
+            "ActionTypes",
+            "camel"
+        ]
+    }
+}

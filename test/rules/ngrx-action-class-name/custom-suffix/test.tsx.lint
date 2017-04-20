@@ -1,0 +1,11 @@
+export class ThisIsAFailingClass implements Action {
+             ~~~~~~~~~~~~~~~~~~~                     [Actions should be suffixed with 'CustomSuffix']
+}
+
+export class DoAThingCustomSuffix implements Action {
+
+}
+
+export class AnotherClass {
+
+}
