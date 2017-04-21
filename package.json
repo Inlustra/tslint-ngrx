@@ -6,6 +6,7 @@
     "test": "test"
   },
   "scripts": {
+    "preversion": "npm-run-all -p build test-rules",
     "build": "npm-run-all -p clean compile copy",
     "clean": "rm -rf ./build/*",
     "lint": "tslint 'src/**/*.ts'",
