@@ -2,7 +2,7 @@
 
 This was hastily thrown together but fully tested, welcome any feedback.
 
-## `ngrx-action-class-name`
+## `ngrx-action-class-suffix`
 
 ### **AutoFixable**
 
@@ -12,7 +12,7 @@ Will pick up any class that `implements Action` and enforce a suffix to be place
 
 ### Example
 
-`"ngrx-action-name-suffix": [true, "CustomSuffix"]`
+`"ngrx-action-class-suffix": [true, "CustomSuffix"]`
 
 Error:
 

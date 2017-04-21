@@ -3,7 +3,6 @@ import * as Lint from "tslint";
 import * as ts from "typescript";
 
 export class Rule extends Lint.Rules.AbstractRule {
-    public static FAILURE_STRING = "import statement forbidden";
 
     public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
         return this.applyWithWalker(new ActionClassWalker(sourceFile, this.getOptions()));
