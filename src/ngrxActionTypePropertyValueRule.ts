@@ -15,35 +15,48 @@ export class Rule extends Lint.Rules.AbstractRule {
 class ActionConstantWalker extends Lint.RuleWalker {
 
     ACTION_TYPE_SUFFIX = this.getOptions() && this.getOptions()[0] || 'ActionTypes';
-    ACTION_TYPE_VALUE_CASE = this.getOptions() && this.getOptions()[1] || 'title';
-    FAILURE_STRING = `Action type values must be ${this.ACTION_TYPE_VALUE_CASE} case`;
+    PROPERTY_VALUE_CASE = this.getOptions() && this.getOptions()[1] || 'title';
+    ACTION_TYPE_IN_VALUE = this.getOptions() && this.getOptions()[2] ? false : true;
+    ACTION_TYPE_VALUE_CASE = this.getOptions() && this.getOptions()[2] || 'capital'
 
     protected visitVariableDeclaration(node: ts.VariableDeclaration) {
         if (!this.isActionTypeDeclaration(node)) return;
         const objLiteral = node.initializer as ts.ObjectLiteralExpression;
-        objLiteral.properties.forEach(obj => this.visitActionTypeProperty(obj))
+        objLiteral.properties
+            .filter(property => property.kind !== ts.SyntaxKind.PropertyAssignment)
+            .filter((property: ts.PropertyAssignment) => !!property.initializer)
+            .map((property: ts.PropertyAssignment) => ({
+                desiredValue: this.getDesiredName(objLiteral.name.getText(), property.name.getText()),
+                valueNode: this.getClosestStringRepresentation(property.initializer)
+            }))
+            .filter(({ valueNode, desiredValue }) => valueNode.getText().indexOf(desiredValue) > -1)
+            .forEach(values => this.visitActionTypeProperty(values))
     }
 
-    visitActionTypeProperty(node: ts.ObjectLiteralElementLike) {
-        if (node.kind !== ts.SyntaxKind.PropertyAssignment) return;
-        const propertyName = node.name.getText();
-        const desiredPropertyValue = this.toDesiredCase(propertyName);
-        const propertyValue = this.getClosestStringRepresentation(node.initializer);
-        if (propertyValue.getText().indexOf(desiredPropertyValue) === -1) {
-            const start = propertyValue.getStart();
-            const width = propertyValue.getWidth();
-            let fix: Lint.Fix;
-            if (propertyValue.kind === ts.SyntaxKind.StringLiteral) {
-                fix = new Lint.Replacement(start + 1, width - 2, desiredPropertyValue)
-            }
-            this.addFailure(
-                this.createFailure(
-                    start,
-                    width,
-                    this.getFailureString(desiredPropertyValue),
-                    fix)
-            )
+    isActionTypeDeclaration(node: ts.VariableDeclaration) {
+        return node.initializer
+            && node.initializer.kind === ts.SyntaxKind.ObjectLiteralExpression
+            && node.name.getText().endsWith(this.ACTION_TYPE_SUFFIX)
+    }
+
+    visitActionTypeProperty({ desiredValue, valueNode }: { desiredValue: string, valueNode: ts.Expression }) {
+        const start = valueNode.getStart();
+        const width = valueNode.getWidth();
+        let fix: Lint.Fix;
+        if (valueNode.kind === ts.SyntaxKind.StringLiteral) {
+            fix = new Lint.Replacement(start + 1, width - 2, desiredValue);
         }
+        this.addFailure(
+            this.createFailure(start, width, this.getFailureString(desiredValue), fix)
+        )
+    }
+
+    getDesiredName(prefixStr: string, valueStr: string) {
+        return this.getDesiredPrefix(prefixStr) + this.toCase(this.PROPERTY_VALUE_CASE, valueStr);
+    }
+
+    getDesiredPrefix(str: string) {
+        return this.ACTION_TYPE_IN_VALUE ? '' : `[${this.toCase(this.ACTION_TYPE_VALUE_CASE, str)}] `;
     }
 
     getClosestStringRepresentation(node: ts.Expression): ts.Expression {
@@ -57,18 +70,13 @@ class ActionConstantWalker extends Lint.RuleWalker {
         return node;
     }
 
-    isActionTypeDeclaration(node: ts.VariableDeclaration) {
-        return node.initializer
-            && node.initializer.kind === ts.SyntaxKind.ObjectLiteralExpression
-            && node.name.getText().endsWith(this.ACTION_TYPE_SUFFIX)
-    }
 
     getFailureString(str: string) {
         return `Action type property value must contain '${str}'`
     }
 
-    toDesiredCase(str: string) {
-        return ((Case as any)[this.ACTION_TYPE_VALUE_CASE] || Case.title)(str);
+    toCase(desiredCase: string, str: string) {
+        return ((Case as any)[desiredCase] || Case.title)(str);
     }
 
 }
