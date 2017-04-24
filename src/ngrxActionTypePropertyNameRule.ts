@@ -16,6 +16,7 @@ class ActionConstantWalker extends Lint.RuleWalker {
 
     ACTION_TYPE_SUFFIX = this.getOptions() && this.getOptions()[0] || 'ActionTypes';
     ACTION_TYPE_NAME_CASE = this.getOptions() && this.getOptions()[1] || 'constant';
+    CONTAINS_ACTION_TYPE_IN_NAME = this.getOptions() && this.getOptions()[2] || true;
     FAILURE_STRING = `Action type properties must be ${this.ACTION_TYPE_NAME_CASE} case`;
 
     protected visitVariableDeclaration(node: ts.VariableDeclaration) {
