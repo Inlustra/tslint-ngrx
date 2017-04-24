@@ -1,6 +1,6 @@
 {
   "name": "tslint-ngrx",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "A repository for opinionated ngrx rules.",
   "directories": {
     "test": "test"
