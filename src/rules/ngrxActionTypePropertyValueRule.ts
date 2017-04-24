@@ -30,14 +30,16 @@ class ActionConstantWalker extends Lint.RuleWalker {
         const desiredPropertyValue = this.toDesiredCase(propertyName);
         const propertyValue = this.getClosestStringRepresentation(node.initializer);
         if (propertyValue.getText().indexOf(desiredPropertyValue) === -1) {
+            const start = propertyValue.getStart();
+            const width = propertyValue.getWidth();
             let fix: Lint.Fix;
             if (propertyValue.kind === ts.SyntaxKind.StringLiteral) {
-                fix = new Lint.Replacement(1, propertyValue.getWidth() - 1, desiredPropertyValue)
+                fix = new Lint.Replacement(start + 1, width - 1, desiredPropertyValue)
             }
             this.addFailure(
                 this.createFailure(
-                    propertyValue.getStart(),
-                    propertyValue.getWidth(),
+                    start,
+                    width,
                     this.getFailureString(desiredPropertyValue),
                     fix)
             )

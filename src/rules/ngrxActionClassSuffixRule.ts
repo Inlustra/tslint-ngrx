@@ -17,14 +17,16 @@ class ActionClassWalker extends Lint.RuleWalker {
     public visitClassDeclaration(node: ts.ClassDeclaration) {
         if (!node.name || !this.isActionClass(node)) return;
         if (!node.name.text.endsWith(this.requiredPrefix)) {
+            const start = node.name.getStart();
+            const width = node.name.getWidth();
             const fix = new Lint.Replacement(
                 0,
                 node.name.text.length,
                 node.name.text + this.requiredPrefix);
             this.addFailure(
                 this.createFailure(
-                    node.name.getStart(),
-                    node.name.text.length,
+                    start,
+                    width,
                     this.getFailureString(),
                     fix)
             );

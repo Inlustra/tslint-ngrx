@@ -27,8 +27,10 @@ class ActionConstantWalker extends Lint.RuleWalker {
     visitActionTypeProperty(node: ts.ObjectLiteralElementLike) {
         const propertyName = node.name.getText();
         if (Case.of(propertyName) !== this.ACTION_TYPE_NAME_CASE) {
-            const fix = new Lint.Replacement(0, propertyName.length, this.toDesiredCase(propertyName))
-            this.addFailure(this.createFailure(node.getStart(), node.name.getWidth(), this.FAILURE_STRING, fix));
+            const start = node.getStart();
+            const width = node.name.getWidth();
+            const fix = new Lint.Replacement(start, propertyName.length, this.toDesiredCase(propertyName))
+            this.addFailure(this.createFailure(start, width, this.FAILURE_STRING, fix));
         }
     }
 
