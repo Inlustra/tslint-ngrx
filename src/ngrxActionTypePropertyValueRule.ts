@@ -14,23 +14,23 @@ export class Rule extends Lint.Rules.AbstractRule {
 // The walker takes care of all the work.
 class ActionConstantWalker extends Lint.RuleWalker {
 
-    ACTION_TYPE_SUFFIX = this.getOptions() && this.getOptions()[0] || 'ActionTypes';
-    PROPERTY_VALUE_CASE = this.getOptions() && this.getOptions()[1] || 'title';
-    ACTION_TYPE_IN_VALUE = this.getOptions() && this.getOptions()[2] ? false : true;
-    ACTION_TYPE_VALUE_CASE = this.getOptions() && this.getOptions()[2] || 'capital'
+    ACTION_TYPE_SUFFIX = this.getOptions()[0] || 'ActionTypes';
+    PROPERTY_VALUE_CASE = this.getOptions()[1] || 'title';
+    ACTION_TYPE_IN_VALUE = this.getOptions()[2] === undefined ? true : this.getOptions()[2];
+    ACTION_TYPE_VALUE_CASE = this.getOptions()[2] || 'capital'
 
     protected visitVariableDeclaration(node: ts.VariableDeclaration) {
         if (!this.isActionTypeDeclaration(node)) return;
         const objLiteral = node.initializer as ts.ObjectLiteralExpression;
         objLiteral.properties
-            .filter(property => property.kind !== ts.SyntaxKind.PropertyAssignment)
+            .filter(property => property.kind === ts.SyntaxKind.PropertyAssignment)
             .filter((property: ts.PropertyAssignment) => !!property.initializer)
             .map((property: ts.PropertyAssignment) => ({
-                desiredValue: this.getDesiredName(objLiteral.name.getText(), property.name.getText()),
+                desiredValue: this.getDesiredName(node.name.getText(), property.name.getText()),
                 valueNode: this.getClosestStringRepresentation(property.initializer)
             }))
-            .filter(({ valueNode, desiredValue }) => valueNode.getText().indexOf(desiredValue) > -1)
-            .forEach(values => this.visitActionTypeProperty(values))
+            .filter(({ valueNode, desiredValue }) => valueNode.getText().indexOf(desiredValue) < 0)
+            .forEach(values => this.createActionTypeFailure(values))
     }
 
     isActionTypeDeclaration(node: ts.VariableDeclaration) {
@@ -39,7 +39,7 @@ class ActionConstantWalker extends Lint.RuleWalker {
             && node.name.getText().endsWith(this.ACTION_TYPE_SUFFIX)
     }
 
-    visitActionTypeProperty({ desiredValue, valueNode }: { desiredValue: string, valueNode: ts.Expression }) {
+    createActionTypeFailure({ desiredValue, valueNode }: { desiredValue: string, valueNode: ts.Expression }) {
         const start = valueNode.getStart();
         const width = valueNode.getWidth();
         let fix: Lint.Fix;
@@ -55,8 +55,9 @@ class ActionConstantWalker extends Lint.RuleWalker {
         return this.getDesiredPrefix(prefixStr) + this.toCase(this.PROPERTY_VALUE_CASE, valueStr);
     }
 
-    getDesiredPrefix(str: string) {
-        return this.ACTION_TYPE_IN_VALUE ? '' : `[${this.toCase(this.ACTION_TYPE_VALUE_CASE, str)}] `;
+    getDesiredPrefix(prefix: string) {
+        prefix = prefix.replace(this.ACTION_TYPE_SUFFIX, '');
+        return this.ACTION_TYPE_IN_VALUE ? `[${this.toCase(this.ACTION_TYPE_VALUE_CASE, prefix)}] ` : '';
     }
 
     getClosestStringRepresentation(node: ts.Expression): ts.Expression {

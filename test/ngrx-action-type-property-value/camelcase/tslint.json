@@ -3,7 +3,8 @@
         "ngrx-action-type-property-value": [
             true,
             "ActionTypes",
-            "camel"
+            "camel",
+            false
         ]
     }
 }
