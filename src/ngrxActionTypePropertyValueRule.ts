@@ -34,7 +34,7 @@ class ActionConstantWalker extends Lint.RuleWalker {
             const width = propertyValue.getWidth();
             let fix: Lint.Fix;
             if (propertyValue.kind === ts.SyntaxKind.StringLiteral) {
-                fix = new Lint.Replacement(start + 1, width - 1, desiredPropertyValue)
+                fix = new Lint.Replacement(start + 1, width - 2, desiredPropertyValue)
             }
             this.addFailure(
                 this.createFailure(
