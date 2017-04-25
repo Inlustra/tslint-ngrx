@@ -1,13 +1,17 @@
 {
   "name": "tslint-ngrx",
-  "version": "1.0.9",
+  "version": "1.1.0",
   "description": "A repository for opinionated ngrx rules.",
   "directories": {
     "test": "test"
   },
   "homepage": "https://github.com/Inlustra/tslint-ngrx",
   "keywords": [
-    "typescript","ngrx", "tslint", "ngrx-effects", "ngrx-store"
+    "typescript",
+    "ngrx",
+    "tslint",
+    "ngrx-effects",
+    "ngrx-store"
   ],
   "bugs": {
     "url": "https://github.com/Inlustra/tslint-ngrx/issues",
