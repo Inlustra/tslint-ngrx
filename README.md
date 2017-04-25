@@ -67,6 +67,8 @@ Will require the property name to be displayed within the property value with ca
     "ngrx-action-type-property-value": [
         true,
         "ActionTypes",
+        "title",
+        true,
         "title"
     ]
 
@@ -80,9 +82,12 @@ Error:
 Success:
 
     export const UserActionTypes = {
-        USER_BUTTON_SUBMIT: 'User Button Submit',
-        USER_TEXT_SUBMIT: type('User Text Submit')
+        USER_BUTTON_SUBMIT: '[User] User Button Submit',
+        USER_TEXT_SUBMIT: type('[User] User Text Submit')
     }
+
+### **New**
+    Added the rule to require the ActionType prefix inside the property value.
 
 ## Notes
 

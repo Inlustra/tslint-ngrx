@@ -5,6 +5,14 @@
   "directories": {
     "test": "test"
   },
+  "homepage": "https://github.com/Inlustra/tslint-ngrx",
+  "keywords": [
+    "typescript","ngrx", "tslint", "ngrx-effects", "ngrx-store"
+  ],
+  "bugs": {
+    "url": "https://github.com/Inlustra/tslint-ngrx/issues",
+    "email": "thomas@thenairn.com"
+  },
   "scripts": {
     "preversion": "run-s build test-rules",
     "build": "run-s clean compile copy",
