@@ -20,7 +20,7 @@ class ActionClassWalker extends Lint.RuleWalker {
             const start = node.name.getStart();
             const width = node.name.getWidth();
             const fix = new Lint.Replacement(
-                0,
+                node.name.getStart(),
                 node.name.text.length,
                 node.name.text + this.requiredPrefix);
             this.addFailure(
