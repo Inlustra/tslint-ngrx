@@ -2,6 +2,9 @@
 
 This was hastily thrown together but fully tested, welcome any feedback.
 
+#### Deprecated:
+These rules no longer reflect how to accurately manage NGRX. Consider using typescript enums to manage Action Names.
+
 ## `ngrx-action-class-suffix`
 
 ### **AutoFixable**
